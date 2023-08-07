@@ -22,16 +22,30 @@ where
     let sample_rate = config.sample_rate.0 as f32;
     let channels = config.channels as usize;
 
-    const TWELVE_TONE_EQUAL_TEMPERAMENT: [f32; 12] = [
-        261.626, 277.183, 293.665, 311.127, 329.628, 349.228, 369.994, 391.995, 415.305, 440.000,
-        466.164, 493.883,
+    const TWELVE_TONE_EQUAL_TEMPERAMENT: [(f32, &str); 12] = [
+        (261.626, "C"),
+        (277.183, "C#"),
+        (293.665, "D"),
+        (311.127, "D#"),
+        (329.628, "E"),
+        (349.228, "F"),
+        (369.994, "F#"),
+        (391.995, "G"),
+        (415.305, "G#"),
+        (440.000, "A"),
+        (466.164, "A#"),
+        (493.883, "B"),
     ];
 
     //random selection of 3 notes from the 12 tone equal temperament scale
-    let freqs: Vec<f32> = TWELVE_TONE_EQUAL_TEMPERAMENT
+    let freqs: Vec<(f32, &str)> = TWELVE_TONE_EQUAL_TEMPERAMENT
         .choose_multiple(&mut rand::thread_rng(), 3)
         .cloned()
         .collect();
+    dbg!(freqs.clone());
+
+    //only need the frequencies
+    let freqs: Vec<f32> = freqs.iter().map(|(f, _)| *f).collect();
 
     let mut sample_clock = 0f32;
     let err_fn = |err| eprintln!("an error occurred on stream: {}", err);
@@ -57,7 +71,7 @@ where
         .unwrap();
 
     stream.play().unwrap();
-    std::thread::sleep(std::time::Duration::from_secs(10));
+    std::thread::sleep(std::time::Duration::from_secs(5));
 }
 
 fn make_tone_waves<T>(freqs: Vec<f32>, &t: &f32) -> T
