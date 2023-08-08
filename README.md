@@ -7,6 +7,7 @@ cargo run
 C4-B4までのランダムな3つの合成波を5秒鳴らします
 
 使用した周波数と音階名の対応
+基準はA=440Hzなので､変えたい場合`main.rs`の`run()`関数内の定数配列を変更してください
 
 ```rust
     const TWELVE_TONE_EQUAL_TEMPERAMENT: [(f32, &str); 12] = [
